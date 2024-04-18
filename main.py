@@ -1,10 +1,23 @@
+import logging
+
 import requests
-from config import config
+
+from config.config import Config
 
 res = requests.get('https://scotch.io')
 
 print(res)
 
+# logging.basicConfig(level=logging.INFO,filename = 'datacamp.log')
 
-print(config.baseUrl)
+logging.basicConfig(level=logging.INFO)
 
+config = Config("config.ini")
+
+logging.info(config.userName)
+logging.info(config.baseUrl)
+logging.info(config.loginUri)
+logging.info(config.logoutUri)
+logging.info(config.stationUri)
+logging.info(config.devicesUri)
+logging.info(config.deviceKpiUri)
