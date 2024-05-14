@@ -4,9 +4,11 @@ import requests
 
 from config.config import Config
 
-res = requests.get('https://scotch.io')
+from controller.connectManager import ConnectManager
 
-print(res)
+#res = requests.get('https://scotch.io')
+
+#print(res)
 
 # logging.basicConfig(level=logging.INFO,filename = 'datacamp.log')
 
@@ -21,3 +23,8 @@ logging.info(config.logoutUri)
 logging.info(config.stationUri)
 logging.info(config.devicesUri)
 logging.info(config.deviceKpiUri)
+
+mgmt = ConnectManager(config)
+mgmt.init_session()
+
+print(mgmt.session_cookie)

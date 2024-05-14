@@ -2,25 +2,32 @@ from config.config import Config
 
 conf = Config('../data/config_test.ini')
 def test_config_userName():
-    assert conf.userName == "theUser"
+    assert conf.userName == "Eugen_API"
 
 def test_config_password():
-    assert conf.systemCode == "pwd"
+    assert conf.systemCode == "SHVhd2VpQDIwMTk="
 
 def test_config_domain():
-    assert conf.baseUrl == "https://domain/thirdData/"
+    assert conf.baseUrl == "https://eu5.fusionsolar.huawei.com/thirdData/"
+
+def test_config_session():
+    assert conf.sessionFile == "../data/sessionFile.txt"
+
+def test_config_session_duration():
+    assert conf.sessionDuration == 1620
+
 
 def test_config_login():
-    assert conf.loginUri == "https://domain/thirdData/login"
+    assert conf.loginUri == "https://eu5.fusionsolar.huawei.com/thirdData/login"
 
 def test_config_logout():
-    assert conf.logoutUri == "https://domain/thirdData/logout"
+    assert conf.logoutUri == "https://eu5.fusionsolar.huawei.com/thirdData/logout"
 
 def test_config_stations():
-    assert conf.stationUri == "https://domain/thirdData/stations"
+    assert conf.stationUri == "https://eu5.fusionsolar.huawei.com/thirdData/stations"
 
 def test_config_devices():
-    assert conf.devicesUri == "https://domain/thirdData/getDevList"
+    assert conf.devicesUri == "https://eu5.fusionsolar.huawei.com/thirdData/getDevList"
 
 def test_config_devicesKpi():
-    assert conf.deviceKpiUri == "https://domain/thirdData/getDevRealKpi"
+    assert conf.deviceKpiUri == "https://eu5.fusionsolar.huawei.com/thirdData/getDevRealKpi"

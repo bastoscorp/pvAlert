@@ -6,6 +6,8 @@ class Config:
     baseUrl = ''
     userName = ''
     systemCode = ''
+    sessionFile = ''
+    sessionDuration: int = 0
 
     loginUri = ''
     logoutUri = ''
@@ -23,6 +25,8 @@ class Config:
         self.baseUrl = config.get('General', 'domain')
         self.userName = config.get('General', 'user')
         self.systemCode = config.get('General', 'password')
+        self.sessionFile = config.get('Session', 'connectionFile')
+        self.sessionDuration = int(config.get('Session', 'duration'))
 
         self.loginUri = urljoin(self.baseUrl, config.get('Login', 'urn'))
         self.logoutUri = urljoin(self.baseUrl, config.get('Logout', 'urn'))
