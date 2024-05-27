@@ -1,11 +1,10 @@
 import time
-
 import pytest
 import shutil
 from os.path import exists as file_exists
 
 from config.config import Config
-from controller.connectManager import ConnectManager
+from business.connectManager import ConnectManager
 
 conf = Config('../data/config_test.ini')
 mgmt = ConnectManager(conf)

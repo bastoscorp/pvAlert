@@ -12,6 +12,8 @@ class Config:
     loginUri = ''
     logoutUri = ''
     stationUri = ''
+    cacheInfoFile = ''
+    cacheInfoFileDuration: int = 0
     devicesUri = ''
     deviceKpiUri = ''
     
@@ -31,5 +33,7 @@ class Config:
         self.loginUri = urljoin(self.baseUrl, config.get('Login', 'urn'))
         self.logoutUri = urljoin(self.baseUrl, config.get('Logout', 'urn'))
         self.stationUri = urljoin(self.baseUrl, config.get('Station', 'urn'))
+        self.cacheInfoFile = config.get('Station', 'cacheInfoFile')
+        self.cacheInfoFileDuration = int(config.get('Station', 'duration'))
         self.devicesUri = urljoin(self.baseUrl, config.get('Devices', 'urn'))
         self.deviceKpiUri = urljoin(self.baseUrl, config.get('DevicesKpi', 'urn'))
