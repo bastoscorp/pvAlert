@@ -16,7 +16,6 @@ def test_config_session():
 def test_config_session_duration():
     assert conf.sessionDuration == 1620
 
-
 def test_config_login():
     assert conf.loginUri == "https://eu5.fusionsolar.huawei.com/thirdData/login"
 
@@ -25,6 +24,12 @@ def test_config_logout():
 
 def test_config_stations():
     assert conf.stationUri == "https://eu5.fusionsolar.huawei.com/thirdData/stations"
+
+def test_config_station_cache_info_file():
+    assert conf.cacheInfoFile == "../data/cache_info.txt"
+
+def test_config_station_duration():
+    assert conf.cacheInfoFileDuration == 86400
 
 def test_config_devices():
     assert conf.devicesUri == "https://eu5.fusionsolar.huawei.com/thirdData/getDevList"

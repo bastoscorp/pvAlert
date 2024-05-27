@@ -12,6 +12,7 @@ import os.path
 from config.config import Config
 
 
+#TODO : add in class ConnectManager
 def decode_pwd(encoded):
     decoded_bytes = base64.b64decode(encoded)
     decoded_string = decoded_bytes.decode("utf-8").rstrip()
