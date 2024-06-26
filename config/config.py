@@ -16,7 +16,16 @@ class Config:
     cacheInfoFileDuration: int = 0
     devicesUri = ''
     deviceKpiUri = ''
-    
+    topic = ''
+    title = ''
+
+    hue_discovery_url = ''
+    hue_url_all_dev = ''
+    hue_username = ''
+    hue_client_key = ''
+    hue_cache_file = ''
+    hue_cache_duration: int = 0
+
     def __init__(self, file: str) -> object:
         """
 
@@ -37,3 +46,10 @@ class Config:
         self.cacheInfoFileDuration = int(config.get('Station', 'duration'))
         self.devicesUri = urljoin(self.baseUrl, config.get('Devices', 'urn'))
         self.deviceKpiUri = urljoin(self.baseUrl, config.get('DevicesKpi', 'urn'))
+
+        self.hue_discovery_url = config.get("action_philips_hue","discover_url")
+        self.hue_url_all_dev = config.get("action_philips_hue","bridge_all_light_devices")
+        self.hue_username = config.get("action_philips_hue","hue_username")
+        self.hue_client_key = config.get("action_philips_hue","hue_client_key")
+        self.hue_cache_file = config.get("action_philips_hue","cacheFile")
+        self.hue_cache_duration = int(config.get("action_philips_hue","cache_duration"))

@@ -36,3 +36,21 @@ def test_config_devices():
 
 def test_config_devicesKpi():
     assert conf.deviceKpiUri == "https://eu5.fusionsolar.huawei.com/thirdData/getDevRealKpi"
+
+def test_config_hue_discovery():
+    assert conf.hue_discovery_url == "https://discovery.meethue.com"
+
+def test_config_hue_all_dev():
+    assert conf.hue_url_all_dev == "https://<bridge_ip>/clip/v2/resource/light"
+
+def test_config_hue_username():
+    assert conf.hue_username == "youpi"
+
+def test_config_hue_client_key():
+    assert conf.hue_client_key == "matin"
+
+def test_config_hue_cache_file():
+    assert conf.hue_cache_file == "philips_hue_cache.txt"
+
+def test_config_hue_cache_file_duration():
+    assert conf.hue_cache_duration == 86400
