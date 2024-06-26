@@ -103,7 +103,7 @@ class RulesManager:
 
                         # case device status ON and need to be power ON:
                         if bool_status == True and rule['action_threshold_crossed'] == "enable":
-                            logging.info("device " + dev_name + "already ON")
+                            logging.info("device " + dev_name + " already ON")
 
                         # case device status ON and need to be power OFF (why disable when generate power? idk):
                         if bool_status == True and rule['action_threshold_crossed'] == "disable":
@@ -115,7 +115,7 @@ class RulesManager:
 
                         # case device status OFF and need to be power OFF (why disable when generate power ? idk):
                         if bool_status == False and rule['action_threshold_crossed'] == "disable":
-                            logging.info("device " + dev_name + "already OFF")
+                            logging.info("device " + dev_name + " already OFF")
                     else:
                         # if there is NOT enough power for this device :
 
