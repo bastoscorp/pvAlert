@@ -12,7 +12,7 @@ from business.powersensorDevice import PowersensorDevice
 from exception.HuaweiApiFrequencyException import HuaweiApiFrequencyException
 from exception.HuaweiApiException import HuaweiApiException
 
-class DeviceManager:
+class SolarDevicesManager:
 
     session_mgmt = ""
     station_code = ""
@@ -154,7 +154,7 @@ class DeviceManager:
                 data = rep_data["data"][0]
                 kpi = data["dataItemMap"]
                 self.ps.status = kpi["meter_status"]
-                self.ps.power = kpi["power_factor"]
+                self.ps.power = kpi["active_power"]
             elif not rep_data["success"] and rep_data["failCode"] == 407:
                 err = rep_data["data"]
                 msg = "Query Frequency Too High"

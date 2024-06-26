@@ -21,7 +21,7 @@ def decode_pwd(encoded):
 
 class ConnectManager:
     session_cookie = {}
-    config: Config = ""
+    config: Config = None
     contentType = {}
 
     def __init__(self, conf: Config):
