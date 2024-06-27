@@ -1,8 +1,8 @@
 from config.config import Config
-import boto3
-import botocore.exceptions
+
 import logging
-import json
+import requests
+
 
 class AlertManager:
     config: Config = None
@@ -11,37 +11,23 @@ class AlertManager:
         self.config = conf
 
     def sendAlert(self, message):
+        url = self.config.alert_configured_url
 
-        logging.error("To implement alert")
-        #dead code here :
+        headers = {
+            "Title": self.config.alert_title,
+            #"Priority": "urgent",
+            "Tags": "warning"
+        }
 
-        # sms_text = message.replace("\n"," ")
-        # messages = {
-        #     "default": message,
-        #     "sms": self.config.title + " : " + sms_text,
-        #     "email": message,
-        # }
-        #
-        # client = boto3.client('sns')
-        # try:
-        #     response = client.publish(
-        #         TopicArn=self.config.topic,
-        #         Message=json.dumps(messages),
-        #         MessageStructure="json",
-        #         Subject=self.config.title
-        #     )
-        # except botocore.exceptions.ClientError as err:
-        #     logging.exception("Couldn't publish message to topic %s.", self.config.topic)
-        #     raise
-        # else:
-        #     if response["ResponseMetadata"]["HTTPStatusCode"] == 200:
-        #         #http return 200 from AWS --> message sent
-        #         response
-        #         return True
-        #     else:
-        #         return False
-        #
-        #
+        response = requests.post(url, headers=headers, data=message.encode(encoding='utf-8'))
+
+        if response.status_code == 200:
+            logging.info("message sent!")
+            return True
+        else:
+            logging.error("cannot send alert")
+            return False
+
 
 
 

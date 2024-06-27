@@ -16,8 +16,7 @@ class Config:
     cacheInfoFileDuration: int = 0
     devicesUri = ''
     deviceKpiUri = ''
-    topic = ''
-    title = ''
+
 
     hue_discovery_url = ''
     hue_url_all_dev = ''
@@ -25,6 +24,10 @@ class Config:
     hue_client_key = ''
     hue_cache_file = ''
     hue_cache_duration: int = 0
+
+    alert_title = ""
+    alert_configured_url = ""
+
 
     def __init__(self, file: str) -> object:
         """
@@ -46,6 +49,9 @@ class Config:
         self.cacheInfoFileDuration = int(config.get('Station', 'duration'))
         self.devicesUri = urljoin(self.baseUrl, config.get('Devices', 'urn'))
         self.deviceKpiUri = urljoin(self.baseUrl, config.get('DevicesKpi', 'urn'))
+
+        self.alert_configured_url = urljoin(config.get("alert","url"),config.get("alert","topic"))
+        self.alert_title = config.get("alert","title")
 
         self.hue_discovery_url = config.get("action_philips_hue","discover_url")
         self.hue_url_all_dev = config.get("action_philips_hue","bridge_all_light_devices")

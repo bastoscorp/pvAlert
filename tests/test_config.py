@@ -54,3 +54,9 @@ def test_config_hue_cache_file():
 
 def test_config_hue_cache_file_duration():
     assert conf.hue_cache_duration == 86400
+
+def test_config_alert_url_configured():
+    assert conf.alert_configured_url == "https://ntfy.sh/a-Testing-topic"
+
+def test_config_alert_title():
+    assert conf.alert_title == "a title"
