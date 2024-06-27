@@ -42,7 +42,7 @@ class RulesManager:
             if self.dev_mgmt.inverter.status != self.inverter_rules.ok_status:
                 # need to alert
                 str_statusCode = str(self.dev_mgmt.inverter.status)
-                str_status = self.inverter_rules.status_list.get(str_statusCode)
+                str_status = str(self.inverter_rules.status_list.get(str_statusCode))
                 if str_status != None:
                     inverter_message = ("Inverter status different from OK ("+ str(self.inverter_rules.ok_status) +")\n"
                                         "Code received is : " + str_statusCode + " --> " + str_status)
@@ -51,7 +51,7 @@ class RulesManager:
                                         "Code received is : " + str_statusCode + "\n"
                                         "Need to check Huawei doc https://support.huawei.com/enterprise/en/doc/EDOC1100261860/d4ee355a/v6-interface-reference")
                 if self.dev_mgmt.inverter.status == 768:
-                    inverter_message = ("Inverter status KO, code : " +str(self.dev_mgmt.inverter.status) + " --> " + str(str_status) +"\n"
+                    inverter_message = ("Inverter status KO, code : " +str(self.dev_mgmt.inverter.status) + " --> " + str_status +"\n"
                                         "Need manual action on AC/DC module as soon as possible")
                 messages = messages + inverter_message + "\n"
             else:
