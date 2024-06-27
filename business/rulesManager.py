@@ -34,10 +34,11 @@ class RulesManager:
             self.last_update = time.time()
 
     def control_status(self):
-        message = ""
+        messages = ""
         self.refresh_data()
         status = False
-        if self.dev_mgmt.inverter.status != None and self.dev_mgmt.ps.status != None:
+        if self.dev_mgmt.inverter.status != None:
+            status_inverter = True
             if self.dev_mgmt.inverter.status != self.inverter_rules.ok_status:
                 # need to alert
                 str_statusCode = str(self.dev_mgmt.inverter.status)
@@ -52,34 +53,42 @@ class RulesManager:
                 if self.dev_mgmt.inverter.status == 768:
                     inverter_message = ("Inverter status KO, code : " +str(self.dev_mgmt.inverter.status) + " --> " + str_status +"\n"
                                         "Need manual action on AC/DC module as soon as possible")
-                message = message + inverter_message + "\n"
+                messages = messages + inverter_message + "\n"
             else:
                 logging.info("Inverter OK")
+        else:
+            #inverter none
+            status_inverter = False
+            messages = "Issue : impossible to get inverter status \n"
 
+        if self.dev_mgmt.ps.status != None:
+            status_ps = True
             if self.dev_mgmt.ps.status != self.ps_rules.ok_status:
                 # need to alert
-                ps_message = "Power sensor issue need manual ASAP"
-                message = message + ps_message + "\n"
+                ps_message = "Powersensor issue need manual action : check if powersensor is ON"
+                messages = messages + ps_message + "\n"
             else:
                 logging.info("Powersensor OK")
             status = True
         else:
-            status = False
-            message = "issue : impossible to both inverter and powersensor status : inverter status : " + str(self.dev_mgmt.inverter.status) + " powersensor status : " + str(self.dev_mgmt.ps.status)
+            status_ps = False
+            messages = messages + "Issue : impossible to get powersensor status"
 
-        if message != "":
-            logging.error(message)
-            logging.warning("need to dev alert system")
-            ##self.alerter.sendAlert(message)
+        if messages != "":
+            logging.error(messages)
+            status = self.alerter.sendAlert(messages)
+        else:
+            status = status_ps and status_inverter
+
         return status
 
     def control_rules(self):
         self.refresh_data()
         # sort rule by priority
-
         rules = sorted(self.power_rules.rules, key=lambda x: x['rule_priority'])
         estimated_remaining_power = self.dev_mgmt.ps.power
         logging.info("Remaining power : " + str(estimated_remaining_power))
+        disable_flag = False
         for rule in rules:
             dev_name = rule['action_device_name']
             dev_type = rule['action_device_type']
@@ -119,33 +128,25 @@ class RulesManager:
                     else:
                         # if there is NOT enough power for this device :
 
-                        # case device status ON and need to be power OFF:
-                        if bool_status == True and rule['action_threshold_below'] == "disable":
-                            if self.action_devices_mgmt.disable_device(dev_type, dev_name):
-                                logging.info(dev_name + " successfully powered OFF !")
-                                estimated_remaining_power = estimated_remaining_power + rule[
-                                    'rule_remaining_power_value']
-                            else:
-                                logging.error("Error when try to power OFF : " + dev_name)
-
-                        # case device status OFF and need to be power OFF:
-                        if bool_status == False and rule['action_threshold_below'] == "disable":
+                        if bool_status == False:
                             logging.info("device " + dev_name + " already OFF")
 
-                        # case device status ON and need to be power ON (why consume more energy ? idk)
-                        if bool_status == True and rule['action_threshold_below'] == "enable":
+                        # case device already ON, keep it as-is
+                        if bool_status == True:
                             logging.info("device " + dev_name + " already ON")
+                        # case device powered OFF, keep it as-is
+                        else:
+                            logging.info("not enough power to start : "+ dev_name)
 
-                        # case device status OFF and need to be power ON (why consume more energy ? idk)
-                        if bool_status == False and rule['action_threshold_below'] == "enable":
-                            if self.action_devices_mgmt.enable_device(dev_type, dev_name):
-                                logging.info(dev_name + " successfully power ON !")
-                                estimated_remaining_power = estimated_remaining_power - rule['rule_remaining_power_value']
-                            else:
-                                logging.error("Error when try to power ON : " + dev_name)
+                else:
+                    #case we cannot get value from Huawei cloud
+                    logging.info("Not enough power produced : Disable")
+                    disable_flag = True
             else:
-                #case powered from main electrical grid or data not reachable as we are not sure we power off device:
-                logging.info("Not enough power produced ! : Disable")
+                # case powered from main electrical grid or data not reachable as we are not sure we power off device:
+                logging.info("Issue to get data from Huawei : Disable")
+                disable_flag = True
+            if disable_flag:
                 if self.action_devices_mgmt.disable_device(dev_type,dev_name):
                     logging.info(dev_name + " successfully power OFF")
                 else:
