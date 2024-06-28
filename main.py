@@ -22,7 +22,7 @@ logging.basicConfig(handlers=[console_handler, file_handler], level=logging.INFO
 logging.info("Start pvAlert Checking ....")
 
 
-#config = Config("config.ini")
-#conso_manager = RulesManager(config)
-#conso_manager.control_status()
-#conso_manager.control_rules()
+config = Config("config.ini")
+conso_manager = RulesManager(config)
+conso_manager.control_status()
+conso_manager.control_rules()
