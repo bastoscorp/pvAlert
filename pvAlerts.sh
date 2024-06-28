@@ -8,4 +8,4 @@ source $script_dir/bin/activate
 
 python3 $script_dir/main.py
 
-source deactivate
+#source deactivate
