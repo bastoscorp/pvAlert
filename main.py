@@ -1,5 +1,5 @@
 import logging
-
+import os
 from logging.handlers import TimedRotatingFileHandler
 from config.config import Config
 from business.rulesManager import RulesManager
@@ -8,7 +8,7 @@ from business.rulesManager import RulesManager
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
 
-import os
+
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, 'logs/pvAlerts.log')
 
@@ -21,8 +21,9 @@ logging.basicConfig(handlers=[console_handler, file_handler], level=logging.INFO
 #
 logging.info("Start pvAlert Checking ....")
 
+conf_filename = os.path.join(dirname, "config.ini")
 
-config = Config("config.ini")
+config = Config(conf_filename)
 conso_manager = RulesManager(config)
 conso_manager.control_status()
 conso_manager.control_rules()
