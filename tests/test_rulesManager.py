@@ -39,20 +39,15 @@ def test_control_status_both_none_case():
     my_rm.last_update = myTime
     my_rm.dev_mgmt.inverter.status = None
     my_rm.dev_mgmt.ps.status = None
-    if my_rm.control_status() == False :
-        assert True
-    else:
-        assert False
+    assert my_rm.control_status()
+
 
 def test_control_status_one_ok_and_none_case():
     myTime = (time.time() - 60)
     my_rm.last_update = myTime
     my_rm.dev_mgmt.inverter.status = 512
     my_rm.dev_mgmt.ps.status = None
-    if my_rm.control_status() == False :
-        assert True
-    else:
-        assert False
+    assert my_rm.control_status()
 
 def test_control_status_one_ko_and_none_case_other():
     myTime = (time.time() - 60)
@@ -77,12 +72,19 @@ def test_control_status_one_ko_and_inverter_warning():
     my_rm.dev_mgmt.ps.status = 0
     assert my_rm.control_status()
 
+def test_control_status_one_ok_and_inverter_warning():
+    myTime = (time.time() - 60)
+    my_rm.last_update = myTime
+    my_rm.dev_mgmt.inverter.status = 771
+    my_rm.dev_mgmt.ps.status = 1
+    assert my_rm.control_status()
+
 
 def test_control_status_one_ok_and_inverter_unknowned_code():
     myTime = (time.time() - 60)
     my_rm.last_update = myTime
     my_rm.dev_mgmt.inverter.status = 9999
-    my_rm.dev_mgmt.ps.status = 0
+    my_rm.dev_mgmt.ps.status = 1
     assert my_rm.control_status()
 
 
