@@ -10,7 +10,7 @@ console_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- 
 
 import os
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, './logs/pvAlerts.log')
+filename = os.path.join(dirname, 'logs/pvAlerts.log')
 print(filename)
 file_handler = logging.FileHandler(filename)
 file_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
