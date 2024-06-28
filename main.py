@@ -14,7 +14,7 @@ filename = os.path.join(dirname, 'logs/pvAlerts.log')
 
 file_handler = logging.FileHandler(filename)
 file_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
-file_handler.handlers = TimedRotatingFileHandler(filename, when='D', interval=30, encoding="utf-8")
+file_handler.handlers = TimedRotatingFileHandler(filename, when='D', interval=1, encoding="utf-8")
 
 logging.basicConfig(handlers=[console_handler, file_handler], level=logging.INFO)
 
