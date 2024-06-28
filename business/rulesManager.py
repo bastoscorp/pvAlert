@@ -35,44 +35,60 @@ class RulesManager:
 
     def control_status(self):
         messages = ""
+        log_warning = ""
         self.refresh_data()
         status = False
         if self.dev_mgmt.inverter.status != None:
-            status_inverter = True
-            if self.dev_mgmt.inverter.status != self.inverter_rules.ok_status:
-                # need to alert
-                str_statusCode = str(self.dev_mgmt.inverter.status)
-                str_status = str(self.inverter_rules.status_list.get(str_statusCode))
-                if str_status != None:
-                    inverter_message = ("Inverter status different from OK ("+ str(self.inverter_rules.ok_status) +")\n"
-                                        "Code received is : " + str_statusCode + " --> " + str_status)
+            # we got a status from Huawei ...
+            str_statusCode = str(self.dev_mgmt.inverter.status)
+            current_status = self.inverter_rules.status_list.get(str_statusCode)
+            inverter_message = ""
+            if current_status != None:
+                #and ... we know the status
+                status_inverter = True
+                str_status = current_status["message"]
+                message_type = current_status["type"]
+                # need to alert ?
+                if message_type != 'ok':
+                    # error case:  log and alert
+                    if message_type == 'error':
+                        inverter_message = ("Inverter status KO, code : " + str(
+                                            self.dev_mgmt.inverter.status) + " --> " + str_status + "\n"
+                                            "Need manual action on AC/DC module as soon as possible\n")
+
+                    #warning case: log but not alert
+                    if message_type == 'warning':
+                        logging.warning ("Inverter status different from OK ("+ str(self.inverter_rules.ok_status) +")")
+                        logging.warning("Code received is : " + str_statusCode + " --> " + str_status)
+                #good case here :
                 else:
-                    inverter_message = ("Inverter status unknowned \n"
-                                        "Code received is : " + str_statusCode + "\n"
-                                        "Need to check Huawei doc https://support.huawei.com/enterprise/en/doc/EDOC1100261860/d4ee355a/v6-interface-reference")
-                if self.dev_mgmt.inverter.status == 768:
-                    inverter_message = ("Inverter status KO, code : " +str(self.dev_mgmt.inverter.status) + " --> " + str_status +"\n"
-                                        "Need manual action on AC/DC module as soon as possible")
-                messages = messages + inverter_message + "\n"
+                    logging.info("Inverter OK")
+            #unknown status here :
             else:
-                logging.info("Inverter OK")
+                inverter_message = ("Inverter unknowed status code : "+ str_statusCode +" \n")
+                status_inverter = False
+        # cannot get status here :
         else:
-            #inverter none
+            inverter_message = ("Issue : impossible to get inverter status \n")
             status_inverter = False
-            messages = "Issue : impossible to get inverter status \n"
+        #stack messages
+        if inverter_message != "":
+            messages = messages + inverter_message + "\n"
+        else:
+            messages = ""
 
         if self.dev_mgmt.ps.status != None:
             status_ps = True
             if self.dev_mgmt.ps.status != self.ps_rules.ok_status:
                 # need to alert
-                ps_message = "Powersensor issue need manual action : check if powersensor is ON"
-                messages = messages + ps_message + "\n"
+                ps_message = "Powersensor issue need manual action : check if powersensor is ON \n"
+                messages = messages + ps_message
             else:
                 logging.info("Powersensor OK")
             status = True
         else:
             status_ps = False
-            messages = messages + "Issue : impossible to get powersensor status"
+            messages = messages + "Issue : impossible to get powersensor status \n"
 
         if messages != "":
             logging.error(messages)

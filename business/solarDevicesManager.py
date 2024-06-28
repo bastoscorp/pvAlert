@@ -125,7 +125,7 @@ class SolarDevicesManager:
             if rep_data['success']:
                 data = rep_data["data"][0]
                 kpi = data["dataItemMap"]
-                self.inverter.status = kpi["inverter_state"]
+                self.inverter.status = int(kpi["inverter_state"])
                 self.inverter.power = kpi["active_power"]
                 self.inverter.temperature = kpi["temperature"]
             elif not rep_data["success"] and rep_data["failCode"] == 407:
