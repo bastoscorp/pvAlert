@@ -9,6 +9,8 @@ from business.powersensorRules import PowersensorRules
 from business.powerUsageRules import PowerUsageRules
 from business.alertManager import AlertManager
 from business.actionDeviceManager import ActionDeviceManager
+from exception.HuaweiApiFrequencyException import *
+from exception.HuaweiApiException import *
 
 class RulesManager:
     dev_mgmt: SolarDevicesManager = None
@@ -29,9 +31,17 @@ class RulesManager:
         if self.last_update != None:
             my_timing = self.last_update
         if age > my_timing:
-            self.dev_mgmt.get_inverter_data()
-            self.dev_mgmt.get_powersensor_data()
-            self.last_update = time.time()
+            try:
+                self.dev_mgmt.get_inverter_data()
+                self.dev_mgmt.get_powersensor_data()
+                self.last_update = time.time()
+            except HuaweiApiFrequencyException as errF:
+                logging.error('Frequency issue! : ' + errF.errors)
+                logging.error("Let system As-is and cooldown")
+                raise SystemExit(errF)
+            except HuaweiApiException as err:
+                logging.error('Huawei cloud issue : ' + err.errors)
+                raise SystemExit(err)
 
     def control_status(self):
         messages = ""

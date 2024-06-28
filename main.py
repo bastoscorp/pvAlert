@@ -12,7 +12,7 @@ file_handler = logging.FileHandler('logs/pvAlerts.log')
 file_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
 file_handler.handlers = TimedRotatingFileHandler('logs/pvAlerts.log', when='D', interval=30, encoding="utf-8")
 
-logging.basicConfig(handlers=[console_handler,file_handler],level=logging.INFO)
+logging.basicConfig(handlers=[console_handler, file_handler], level=logging.INFO)
 
 
 logging.info("Start pvAlert Checking ....")
