@@ -8,7 +8,11 @@ from business.rulesManager import RulesManager
 console_handler = logging.StreamHandler()
 console_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
 
-file_handler = logging.FileHandler('./logs/pvAlerts.log')
+import os
+dirname = os.path.dirname(__file__)
+filename = os.path.join(dirname, './logs/pvAlerts.log')
+print(filename)
+file_handler = logging.FileHandler(filename)
 file_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
 file_handler.handlers = TimedRotatingFileHandler('logs/pvAlerts.log', when='D', interval=30, encoding="utf-8")
 
