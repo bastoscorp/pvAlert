@@ -14,7 +14,7 @@ file_handler.handlers = TimedRotatingFileHandler('logs/pvAlerts.log', when='D', 
 
 logging.basicConfig(handlers=[console_handler, file_handler], level=logging.INFO)
 
-
+#
 logging.info("Start pvAlert Checking ....")
 
 
