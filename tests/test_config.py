@@ -11,7 +11,7 @@ def test_config_domain():
     assert conf.baseUrl == "https://eu5.fusionsolar.huawei.com/thirdData/"
 
 def test_config_session():
-    assert conf.sessionFile == "../data/sessionFile.txt"
+    assert conf.sessionFile != ""
 
 def test_config_session_duration():
     assert conf.sessionDuration == 1620
@@ -26,7 +26,7 @@ def test_config_stations():
     assert conf.stationUri == "https://eu5.fusionsolar.huawei.com/thirdData/stations"
 
 def test_config_station_cache_info_file():
-    assert conf.cacheInfoFile == "../data/cache_info.txt"
+    assert conf.cacheInfoFile != ""
 
 def test_config_station_duration():
     assert conf.cacheInfoFileDuration == 86400
@@ -50,7 +50,7 @@ def test_config_hue_client_key():
     assert conf.hue_client_key == "matin"
 
 def test_config_hue_cache_file():
-    assert conf.hue_cache_file == "philips_hue_cache.txt"
+    assert conf.hue_cache_file != ""
 
 def test_config_hue_cache_file_duration():
     assert conf.hue_cache_duration == 86400

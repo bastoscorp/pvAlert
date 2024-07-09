@@ -134,6 +134,9 @@ class SolarDevicesManager:
                 logging.error(msg,err)
                 raise HuaweiApiFrequencyException(msg, err)
             else:
+                err = rep_data["data"]
+                msg = rep_data["message"]
+                logging.error(msg,err)
                 raise HuaweiApiException("issue with Huawei API", rep_data)
         except requests.exceptions.HTTPError as err:
             logging.error("Error HTTP:", err)
@@ -141,6 +144,16 @@ class SolarDevicesManager:
         except requests.exceptions.ConnectionError as errc:
             logging.error("Error Connecting:", errc)
             raise SystemExit(errc)
+        finally:
+            if rep_data["failCode"] == 305:
+                err = rep_data["failCode"]
+                msg = "User must Relogin"
+                logging.error(msg,err)
+                logging.info("deleting session...")
+                if (self.session_mgmt.delete_session()):
+                    logging.info("Session Deleted !")
+                raise HuaweiApiException(msg, rep_data)
+
 
     def get_powersensor_data(self):
         uri = self.session_mgmt.config.deviceKpiUri

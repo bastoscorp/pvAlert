@@ -26,27 +26,7 @@ file_handler.setLevel(logging.INFO)
 file_handler.addFilter(logging.Filter())
 logging.root.addHandler(file_handler)
 
-# logging.root.setLevel(logging.INFO)
-#
-# console = logging.StreamHandler()
-# console.setLevel(logging.INFO)
-# console.setFormatter(logging.Formatter('%(message)s'))
-# console.addFilter(logging.Filter())
-# logging.root.addHandler(console)
-#
-# dirname = os.path.dirname(__file__)
-# filename = os.path.join(dirname, 'logs/pvAlerts.log')
-#
-# formatter = logging.Formatter('%(asctime)s - %(module)s %(filename)s %(funcName)s:%(lineno)s - %(name)s -%(message)s')
-# file_handler_info = TimedRotatingFileHandler(filename=filename, when='D', interval=1,
-#                                              encoding='utf-8')
-# file_handler_info.setFormatter(formatter)
-# file_handler_info.setLevel(logging.INFO)
-# file_handler_info.addFilter(logging.Filter())
-# logging.root.addHandler(file_handler_info)
 
-
-#
 logging.info("Start pvAlert Checking ....")
 
 conf_filename = os.path.join(dirname, "config.ini")
