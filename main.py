@@ -12,7 +12,7 @@ console_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- 
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, 'logs/pvAlerts.log')
 
-file_handler = logging.FileHandler("my_handler")
+file_handler = logging.FileHandler("my_file_handler")
 file_handler.setFormatter(logging.Formatter('%(asctime)s -- %(levelname)s -- %(message)s'))
 file_handler.handlers = TimedRotatingFileHandler(filename, when='D', interval=1, encoding="utf-8")
 
