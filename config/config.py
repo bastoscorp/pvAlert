@@ -1,4 +1,5 @@
 import configparser
+import os
 from urllib.parse import urljoin
 
 
@@ -36,16 +37,31 @@ class Config:
         """
         config = configparser.ConfigParser()
         config.read(file)
+
+        configDir =os.path.dirname(__file__)
+        pvHome = os.path.dirname(configDir)
+
         self.baseUrl = config.get('General', 'domain')
         self.userName = config.get('General', 'user')
         self.systemCode = config.get('General', 'password')
-        self.sessionFile = config.get('Session', 'connectionFile')
+
+        sessFile = config.get('Session', 'connectionFile')
+        self.sessionFile = os.path.join(pvHome, sessFile)
+        self.checkDirs(self.sessionFile)
+
+
+
         self.sessionDuration = int(config.get('Session', 'duration'))
 
         self.loginUri = urljoin(self.baseUrl, config.get('Login', 'urn'))
         self.logoutUri = urljoin(self.baseUrl, config.get('Logout', 'urn'))
         self.stationUri = urljoin(self.baseUrl, config.get('Station', 'urn'))
-        self.cacheInfoFile = config.get('Station', 'cacheInfoFile')
+
+        stationInfoFile = config.get('Station', 'cacheInfoFile')
+        self.cacheInfoFile = os.path.join(pvHome,stationInfoFile)
+        self.checkDirs(self.cacheInfoFile)
+
+
         self.cacheInfoFileDuration = int(config.get('Station', 'duration'))
         self.devicesUri = urljoin(self.baseUrl, config.get('Devices', 'urn'))
         self.deviceKpiUri = urljoin(self.baseUrl, config.get('DevicesKpi', 'urn'))
@@ -57,5 +73,16 @@ class Config:
         self.hue_url_all_dev = config.get("action_philips_hue","bridge_all_light_devices")
         self.hue_username = config.get("action_philips_hue","hue_username")
         self.hue_client_key = config.get("action_philips_hue","hue_client_key")
-        self.hue_cache_file = config.get("action_philips_hue","cacheFile")
+
+        hue_cache = config.get("action_philips_hue","cacheFile")
+        self.hue_cache_file = os.path.join(pvHome,hue_cache)
+        self.checkDirs(self.hue_cache_file)
+
         self.hue_cache_duration = int(config.get("action_philips_hue","cache_duration"))
+
+
+    def checkDirs(self,path):
+        parent = os.path.dirname(path)
+        if not (os.path.exists(parent)):
+            os.makedirs(parent)
+

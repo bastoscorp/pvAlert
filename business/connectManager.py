@@ -78,6 +78,10 @@ class ConnectManager:
     def delete_session(self):
         self.session_cookie = {}
         os.remove(self.config.sessionFile)
+        if os.path.exists(self.config.sessionFile):
+            return False
+        else:
+            return True
 
     def logout(self, session):
         logout_uri = self.config.logoutUri
