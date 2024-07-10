@@ -19,14 +19,17 @@ logging.root.addHandler(console_handler)
 dirname = os.path.dirname(__file__)
 filename = os.path.join(dirname, 'logs/pvAlerts.log')
 
-file_handler = logging.FileHandler(filename)
-file_handler.setFormatter(formatter)
+
 myTimeHandler = TimedRotatingFileHandler(filename, when='midnight', backupCount=60, encoding="utf-8")
 myTimeHandler.suffix = "%Y-%m-%d.log"
+#for testing only
+#myTimeHandler = TimedRotatingFileHandler(filename, when='s', interval=5 , backupCount=60, encoding="utf-8")
+#myTimeHandler.suffix = "%Y-%m-%d--%H-%M.log"
 
-file_handler.setLevel(logging.INFO)
-file_handler.addFilter(logging.Filter())
-logging.root.addHandler(file_handler)
+myTimeHandler.filter(logging.Filter())
+myTimeHandler.setFormatter(formatter)
+myTimeHandler.setLevel(logging.INFO)
+
 logging.root.addHandler(myTimeHandler)
 
 
