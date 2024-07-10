@@ -21,11 +21,13 @@ filename = os.path.join(dirname, 'logs/pvAlerts.log')
 
 file_handler = logging.FileHandler(filename)
 file_handler.setFormatter(formatter)
-file_handler.handlers = TimedRotatingFileHandler(filename, when='d', interval=1, encoding="utf-8")
-file_handler.suffix = "%Y-%m-%d.log"
+myTimeHandler = TimedRotatingFileHandler(filename, when='midnight', backupCount=60, encoding="utf-8")
+myTimeHandler.suffix = "%Y-%m-%d.log"
+
 file_handler.setLevel(logging.INFO)
 file_handler.addFilter(logging.Filter())
 logging.root.addHandler(file_handler)
+logging.root.addHandler(myTimeHandler)
 
 
 logging.info("Start pvAlert Checking ....")
