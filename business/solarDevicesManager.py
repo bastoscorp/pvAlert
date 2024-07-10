@@ -144,6 +144,8 @@ class SolarDevicesManager:
         except requests.exceptions.ConnectionError as errc:
             logging.error("Error Connecting:", errc)
             raise SystemExit(errc)
+        except Exception as exp:
+            logging.error("Error in getting inverter data:", exp)
         finally:
             if rep_data["failCode"] == 305:
                 err = rep_data["failCode"]
@@ -181,3 +183,5 @@ class SolarDevicesManager:
         except requests.exceptions.ConnectionError as errc:
             logging.error("Error Connecting:", errc)
             raise SystemExit(errc)
+
+

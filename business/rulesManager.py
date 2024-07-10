@@ -42,6 +42,9 @@ class RulesManager:
             except HuaweiApiException as err:
                 logging.error('Huawei cloud issue : ' + err.errors)
                 raise SystemExit(err)
+            except Exception as exp:
+                logging.error("Error :", exp)
+                raise SystemExit(exp)
 
     def control_status(self):
         messages = ""
