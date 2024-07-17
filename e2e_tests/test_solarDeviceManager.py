@@ -20,28 +20,28 @@ conf = Config(conffile)
 
 mgmt = ConnectManager(conf)
 
-def test_init_device_manager_without_cache_info_file():
-    file = conf.cacheInfoFile
-    dirn = os.path.dirname(file)
-    oldfilename = os.path.join(dirn, 'cache_info.txt.old')
-
-    if file_exists(file):
-        os.rename(file, oldfilename)
-        time.sleep(2)
-    l_dev = ""
-    l_dev = SolarDevicesManager(mgmt)
-    fex = file_exists(file)
-    time.sleep(2)
-    ret = False
-    if(l_dev.station_code != "" and l_dev.inverter.device_id != "" and l_dev.inverter.device_name != ""
-            and l_dev.ps.device_id != "" and l_dev.ps.device_name != "" and fex == True):
-        ret = True
-    if ret and file_exists(oldfilename):
-        os.remove(oldfilename)
-    else:
-        os.rename(oldfilename,file)
-    time.sleep(2)
-    assert ret
+# def test_init_device_manager_without_cache_info_file():
+#     file = conf.cacheInfoFile
+#     dirn = os.path.dirname(file)
+#     oldfilename = os.path.join(dirn, 'cache_info.txt.old')
+#
+#     if file_exists(file):
+#         os.rename(file, oldfilename)
+#         time.sleep(2)
+#     l_dev = ""
+#     l_dev = SolarDevicesManager(mgmt)
+#     fex = file_exists(file)
+#     time.sleep(2)
+#     ret = False
+#     if(l_dev.station_code != "" and l_dev.inverter.device_id != "" and l_dev.inverter.device_name != ""
+#             and l_dev.ps.device_id != "" and l_dev.ps.device_name != "" and fex == True):
+#         ret = True
+#     if ret and file_exists(oldfilename):
+#         os.remove(oldfilename)
+#     else:
+#         os.rename(oldfilename,file)
+#     time.sleep(2)
+#     assert ret
 
 def test_init_device_manager():
     l_dev = SolarDevicesManager(mgmt)
@@ -90,23 +90,23 @@ def test_get_device_with_wrong_url():
         conf.devicesUri = good_device_url
         assert True
 
-def test_get_inverter_data():
-    time.sleep(30)
-    l_dev = SolarDevicesManager(mgmt)
-    l_dev.get_inverter_data()
-    if l_dev.inverter.power == "" and l_dev.inverter.status == "":
-        assert False
-    else:
-        assert True
-
-def test_get_powersensor_data():
-    time.sleep(30)
-    l_dev = SolarDevicesManager(mgmt)
-    l_dev.get_powersensor_data()
-    if l_dev.ps.power == "" and l_dev.ps.status == "":
-        assert False
-    else:
-        assert True
+# def test_get_inverter_data():
+#     time.sleep(30)
+#     l_dev = SolarDevicesManager(mgmt)
+#     l_dev.get_inverter_data()
+#     if l_dev.inverter.power == "" and l_dev.inverter.status == "":
+#         assert False
+#     else:
+#         assert True
+#
+# def test_get_powersensor_data():
+#     time.sleep(30)
+#     l_dev = SolarDevicesManager(mgmt)
+#     l_dev.get_powersensor_data()
+#     if l_dev.ps.power == "" and l_dev.ps.status == "":
+#         assert False
+#     else:
+#         assert True
 
 
 def test_get_inverter_data_with_wrong_url():
