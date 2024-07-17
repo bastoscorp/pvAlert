@@ -17,7 +17,7 @@ console_handler.addFilter(logging.Filter())
 logging.root.addHandler(console_handler)
 
 dirname = os.path.dirname(__file__)
-filename = os.path.join(dirname, 'logs/pvAlerts.log')
+filename = os.path.join(dirname, 'logs/pvAlert.log')
 
 
 myTimeHandler = TimedRotatingFileHandler(filename, when='midnight', backupCount=60, encoding="utf-8")
