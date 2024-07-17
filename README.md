@@ -29,6 +29,7 @@ Note : I prefer to precise that an **internet connection is required.**
 2. Clone from github:
 `git clone https://github.com/bastoscorp/pvAlerts`
 
+whoop
 ## Configuration :
 
 All configuration is done within `config.ini` file.
