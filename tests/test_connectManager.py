@@ -1,25 +1,20 @@
 import time
 import pytest
 import shutil
-
+import test_locator
 import os
 from os.path import exists as file_exists
 from shutil import copyfile
-
-import sys
-sys.path.insert(0, '../pvAlert')
-
-
 from config.config import Config
 from business.connectManager import ConnectManager
 
+test_locator = test_locator
 
-dirname = os.path.dirname(__file__)
-#get parrent config file
-home = os.path.dirname(dirname)
+current_dir = os.path.dirname(__file__)
+# get parrent config file
+home = os.path.dirname(current_dir)
 conffile = os.path.join(home, 'data/config_test.ini')
 conf = Config(conffile)
-
 
 mgmt = ConnectManager(conf)
 current_session_file = conf.sessionFile + ".bak"
@@ -76,6 +71,7 @@ def test_delete_session(manage_session_safe_delete_session_file):
     mgmt.delete_session()
     assert mgmt.session_cookie == {}
 
+
 def test_load_session_without_file(manage_session_safe_delete_session_file):
     ret = mgmt.load_session()
     if not ret:
@@ -85,12 +81,12 @@ def test_load_session_without_file(manage_session_safe_delete_session_file):
 
 
 def test_load_session_with_outdated_file(backup_restore_session_file):
-    mgmt = ConnectManager(conf)
+    conn_mg = ConnectManager(conf)
     old = conf.sessionDuration
     conf.sessionDuration = 1
     # await for file system to update
     time.sleep(2)
-    ret = mgmt.load_session()
+    ret = conn_mg.load_session()
     conf.sessionDuration = old
     if not ret:
         assert True
@@ -105,11 +101,10 @@ def test_logout_wrong_url():
     conf.logoutUri = fake_logout_url
     try:
         mgmt.logout(mgmt.session_cookie)
-    except Exception as err:
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(err).__name__, err.args)
+    except Exception:
         conf.logoutUri = good_url
         assert True
+
 
 def test_login_with_wrong_credentials():
     mgmt.session_cookie = ""
@@ -127,9 +122,6 @@ def test_login_with_wrong_url():
     conf.loginUri = fake_login_url
     try:
         mgmt.login()
-    except Exception as err:
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(err).__name__, err.args)
+    except Exception:
         conf.loginUri = good_url
         assert True
-
