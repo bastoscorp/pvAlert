@@ -24,12 +24,11 @@ Note : I prefer to precise that an **internet connection is required.**
 
 ## Installation :
 
-1. Create folder where you want to install
+Very simple, execute this :
 
-2. Clone from github:
-`git clone https://github.com/bastoscorp/pvAlert`
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bastoscorp/pvAlert/main/install_pvAlert.sh)"`
 
-whoop
+
 ## Configuration :
 
 All configuration is done within `config.ini` file.
