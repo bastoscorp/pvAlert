@@ -7,7 +7,7 @@ from config.config import Config
 from exception.HuaweiApiException import HuaweiApiException
 
 test_locator = test_locator
-# need a configured config.ini file !!!
+# need a configured config.ini file !!
 
 dirname = os.path.dirname(__file__)
 # get parrent config file

@@ -6,7 +6,7 @@ from config.config import Config
 from business.connectManager import ConnectManager
 from business.rulesManager import RulesManager
 
-# dumb test
+
 test_locator = test_locator
 
 # need a configured config.ini file !!!

@@ -6,7 +6,7 @@ from os.path import exists as file_exists
 from config.config import Config
 from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 
-# dumb test for quality
+
 test_locator = test_locator
 # should have a configured philips hue tor testing
 
