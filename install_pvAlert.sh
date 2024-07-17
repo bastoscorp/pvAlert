@@ -1,11 +1,24 @@
 #!/bin/bash
 
-script_dir=`pwd`
 
-python3 -m venv ../pvAlert
+git --version 2>&1 >/dev/null # improvement by tripleee
+GIT_IS_AVAILABLE=$?
+# ...
+if [ $GIT_IS_AVAILABLE -eq 0 ]; then #..
 
-source bin/activate
+  git clone https://github.com/bastoscorp/pvAlert -b dev
 
-pip install -r requirements.txt
+  cd pvAlert
 
-deactivate
+  python3 -m venv ../pvAlert
+
+  source bin/activate
+
+  pip install -r requirements.txt
+
+  deactivate
+
+else
+  echo "Install Git first"
+fi
+
