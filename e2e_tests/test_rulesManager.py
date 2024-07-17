@@ -11,7 +11,8 @@ from business.rulesManager import RulesManager
 
 
 
-# need a configured config.ini file
+# need a configured config.ini file !!!
+
 dirname = os.path.dirname(__file__)
 #get parrent config file
 home = os.path.dirname(dirname)

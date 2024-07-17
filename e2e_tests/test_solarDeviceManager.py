@@ -10,6 +10,8 @@ from business.connectManager import ConnectManager
 from business.solarDevicesManager import SolarDevicesManager
 
 
+# need a configured config.ini file !!!
+
 dirname = os.path.dirname(__file__)
 #get parrent config file
 home = os.path.dirname(dirname)
