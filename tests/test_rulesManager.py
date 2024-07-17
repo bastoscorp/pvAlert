@@ -4,7 +4,7 @@ from config.config import Config
 from business.connectManager import ConnectManager
 from business.rulesManager import RulesManager
 
-
+# need a configured config.ini file
 conf = Config('../config.ini')
 mgmt = ConnectManager(conf)
 my_rm = RulesManager(conf)

@@ -2,6 +2,7 @@ import time
 import pytest
 import shutil
 from os.path import exists as file_exists
+from shutil import copyfile
 
 from config.config import Config
 from business.connectManager import ConnectManager
@@ -9,7 +10,7 @@ from business.connectManager import ConnectManager
 conf = Config('../data/config_test.ini')
 mgmt = ConnectManager(conf)
 current_session_file = conf.sessionFile + ".bak"
-
+copyfile('../data/sessionFile.txt', conf.sessionFile)
 
 def test_config_username():
     assert conf.userName == "Eugen_API"
