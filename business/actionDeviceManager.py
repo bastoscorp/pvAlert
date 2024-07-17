@@ -2,11 +2,11 @@ from config.config import Config
 from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 import logging
 from random import randrange
-class ActionDeviceManager:
 
+
+class ActionDeviceManager:
     config: Config = None
     testing_status = {}
-
 
     def __init__(self, conf: Config):
         self.config = conf
@@ -21,18 +21,18 @@ class ActionDeviceManager:
             if self.testing_status.get(dev_name) == None:
                 if randrange(10) % 2 == 0:
                     status = {'status': True,
-                        'message': "powered on"
-                        }
+                              'message': "powered on"
+                              }
                 else:
                     status = {'status': False,
-                        'message': "powered off"
-                        }
+                              'message': "powered off"
+                              }
                 self.testing_status[dev_name] = status
             return self.testing_status.get(dev_name)
         else:
             logging.warning(dev_type + " device type not implemented")
 
-    def enable_device(self,dev_type: str, dev_name: str):
+    def enable_device(self, dev_type: str, dev_name: str):
         status = None
         if dev_type == "philips_hue":
             dev_manager: ActionDevicePhilipsHue = ActionDevicePhilipsHue(self.config)
@@ -47,8 +47,7 @@ class ActionDeviceManager:
         else:
             logging.warning(dev_type + " device type not implemented")
 
-
-    def disable_device(self,dev_type: str, dev_name: str):
+    def disable_device(self, dev_type: str, dev_name: str):
         status = None
         if dev_type == "philips_hue":
             dev_manager: ActionDevicePhilipsHue = ActionDevicePhilipsHue(self.config)
@@ -56,8 +55,8 @@ class ActionDeviceManager:
             return status
         if dev_type == "testing":
             status = {'status': False,
-                        'message': "powered off"
-                        }
+                      'message': "powered off"
+                      }
             self.testing_status[dev_name] = status
             return True
         else:
