@@ -6,7 +6,7 @@ from business.rulesManager import RulesManager
 
 logging.root.setLevel(logging.INFO)
 
-#formatter = logging.Formatter('%(asctime)s - %(module)s %(filename)s %(funcName)s:%(lineno)s - %(name)s -%(message)s')
+# formatter = logging.Formatter('%(asctime)s - %(module)s %(filename)s %(funcName)s:%(lineno)s - %(name)s -%(message)s')
 
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(module)s - %(funcName)s - %(message)s')
 
@@ -16,33 +16,28 @@ console_handler.setLevel(logging.INFO)
 console_handler.addFilter(logging.Filter())
 logging.root.addHandler(console_handler)
 
-dirname = os.path.dirname(__file__)
-dirlogs = os.path.join(dirname,"logs")
-if os.path.exists(dirlogs) == False:
+current_dir = os.path.dirname(__file__)
+dirlogs = os.path.join(current_dir, "logs")
+if not os.path.exists(dirlogs):
     os.mkdir(dirlogs)
 
 filename = os.path.join(dirlogs, 'pvAlert.log')
 
-
-
-
-
 myTimeHandler = TimedRotatingFileHandler(filename, when='midnight', backupCount=60, encoding="utf-8")
 myTimeHandler.suffix = "%Y-%m-%d.log"
-#for testing only
-#myTimeHandler = TimedRotatingFileHandler(filename, when='s', interval=5 , backupCount=60, encoding="utf-8")
-#myTimeHandler.suffix = "%Y-%m-%d--%H-%M.log"
+# for testing only
+# myTimeHandler = TimedRotatingFileHandler(filename, when='s', interval=5 , backupCount=60, encoding="utf-8")
+# myTimeHandler.suffix = "%Y-%m-%d--%H-%M.log"
 
-myTimeHandler.filter(logging.Filter())
+# myTimeHandler.filter(logging.Filter())
 myTimeHandler.setFormatter(formatter)
 myTimeHandler.setLevel(logging.INFO)
 
 logging.root.addHandler(myTimeHandler)
 
-
 logging.info("Start pvAlert Checking ....")
 
-conf_filename = os.path.join(dirname, "config.ini")
+conf_filename = os.path.join(current_dir, "config.ini")
 
 config = Config(conf_filename)
 conso_manager = RulesManager(config)

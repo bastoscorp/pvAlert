@@ -11,7 +11,3 @@ class InverterDevice:
     # 768 mean --KO
     power = ""
     temperature = ""
-
-
-
-

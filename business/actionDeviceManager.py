@@ -18,7 +18,7 @@ class ActionDeviceManager:
             status = dev_manager.get_device_status(dev_name)
             return status
         if dev_type == "testing":
-            if self.testing_status.get(dev_name) == None:
+            if self.testing_status.get(dev_name) is None:
                 if randrange(10) % 2 == 0:
                     status = {'status': True,
                               'message': "powered on"
@@ -31,6 +31,7 @@ class ActionDeviceManager:
             return self.testing_status.get(dev_name)
         else:
             logging.warning(dev_type + " device type not implemented")
+        return status
 
     def enable_device(self, dev_type: str, dev_name: str):
         status = None
@@ -46,6 +47,7 @@ class ActionDeviceManager:
             return True
         else:
             logging.warning(dev_type + " device type not implemented")
+        return status
 
     def disable_device(self, dev_type: str, dev_name: str):
         status = None
@@ -61,3 +63,4 @@ class ActionDeviceManager:
             return True
         else:
             logging.warning(dev_type + " device type not implemented")
+        return status
