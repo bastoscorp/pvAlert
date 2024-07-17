@@ -50,7 +50,6 @@ class RulesManager:
 
     def control_status(self):
         messages = ""
-        log_warning = ""
         self.refresh_data()
         status = False
         if self.dev_mgmt.inverter.status is not None:
@@ -136,7 +135,7 @@ class RulesManager:
                         # if there is enough power for this device
 
                         # case device status OFF and need to be power ON:
-                        if bool_status == False and rule['action_threshold_crossed'] == "enable":
+                        if bool_status is False and rule['action_threshold_crossed'] == "enable":
                             if self.action_devices_mgmt.enable_device(dev_type, dev_name):
                                 logging.info(dev_name + " successfully power ON !")
                                 estimated_remaining_power = estimated_remaining_power - rule[
@@ -145,11 +144,11 @@ class RulesManager:
                                 logging.error("Error when try to power ON : " + dev_name)
 
                         # case device status ON and need to be power ON:
-                        if bool_status == True and rule['action_threshold_crossed'] == "enable":
+                        if bool_status is True and rule['action_threshold_crossed'] == "enable":
                             logging.info("device " + dev_name + " already ON")
 
                         # case device status ON and need to be power OFF (why disable when generate power? idk):
-                        if bool_status == True and rule['action_threshold_crossed'] == "disable":
+                        if bool_status is True and rule['action_threshold_crossed'] == "disable":
                             if self.action_devices_mgmt.disable_device(dev_type, dev_name):
                                 logging.info(dev_name + " successfully power OFF")
                                 estimated_remaining_power = estimated_remaining_power - rule[
@@ -158,16 +157,16 @@ class RulesManager:
                                 logging.error("Error when try to power OFF: " + dev_name)
 
                         # case device status OFF and need to be power OFF (why disable when generate power ? idk):
-                        if bool_status == False and rule['action_threshold_crossed'] == "disable":
+                        if bool_status is False and rule['action_threshold_crossed'] == "disable":
                             logging.info("device " + dev_name + " already OFF")
                     else:
                         # if there is NOT enough power for this device :
 
-                        if bool_status == False:
+                        if bool_status is False:
                             logging.info("device " + dev_name + " already OFF")
 
                         # case device already ON, keep it as-is
-                        if bool_status == True:
+                        if bool_status is True:
                             logging.info("device " + dev_name + " already ON")
                         # case device powered OFF, keep it as-is
                         else:
