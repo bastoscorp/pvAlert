@@ -1,4 +1,5 @@
 from config.config import Config
+from os.path import exists as file_exists
 
 import logging
 import requests
@@ -8,10 +9,8 @@ import pickle
 import json
 
 import urllib3
+
 urllib3.disable_warnings()
-
-
-from os.path import exists as file_exists
 
 
 class ActionDevicePhilipsHue:
@@ -44,7 +43,7 @@ class ActionDevicePhilipsHue:
         return ret
 
     def save_cache_data(self):
-        if self.bridge_ip == None:
+        if self.bridge_ip is None:
             self.discover_ip()
         cache_file = self.config.hue_cache_file
         data = {'bridge_ip': self.bridge_ip
@@ -61,11 +60,13 @@ class ActionDevicePhilipsHue:
                 data = rep_data[0]
                 self.bridge_ip = data['internalipaddress']
             else:
-                logging.error("issue to get Philips Hue Bridge ip address, got http error : " + response.status_code + " reason : " + response.reason)
-        except requests.exceptions as C:
+                logging.error(
+                    "issue to get Philips Hue Bridge ip address, got http error : " + str(
+                        response.status_code) + " reason : " + response.reason)
+        except requests.exceptions:
             logging.error("issue to get Philips Hue Bridge ip address")
 
-    def get_device_id(self,device_name):
+    def get_device_id(self, device_name):
         url_raw = self.config.hue_url_all_dev
         url = url_raw.replace(self.bridge_ip_token, self.bridge_ip)
         try:
@@ -75,66 +76,67 @@ class ActionDevicePhilipsHue:
             if response.status_code == 200:
                 rep_data = response.json()
                 data = rep_data['data']
-                data_size= len(data)
+                data_size = len(data)
                 i = 0
                 while i < data_size:
                     dev = data[i]
                     metadata = dev['metadata']
                     name = metadata['name']
                     if name == device_name:
-                        target_id =str(dev['id'])
+                        target_id = str(dev['id'])
                         i = data_size
                     i += 1
             else:
 
-                logging.error("issue to reach Philips Hue Bridge, got http error : " +  str(response.status_code) + " reason : " + response.reason)
+                logging.error("issue to reach Philips Hue Bridge, got http error : " + str(
+                    response.status_code) + " reason : " + response.reason)
 
             if target_id != "":
                 return target_id
             else:
                 logging.error("cannot find device named :" + device_name)
                 return None
-        except requests.exceptions as C:
+        except requests.exceptions:
             logging.error("issue to reach Philips Hue bridge")
             return None
-
 
     def get_device_status(self, device_name):
         hue_id = self.get_device_id(device_name)
         status = None
-        if hue_id != None:
+        if hue_id is not None:
             url_raw = self.config.hue_url_all_dev
             url = url_raw.replace(self.bridge_ip_token, self.bridge_ip)
             url = url + '/' + hue_id
             headers = {"hue-application-key": self.config.hue_username}
             try:
-                response = requests.get(url , headers=headers , verify=False)
+                response = requests.get(url, headers=headers, verify=False)
                 if response.status_code == 200:
                     rep_data = response.json()
                     data = rep_data['data']
                     status = data[0]["on"]["on"]
                 else:
-                    logging.error("issue to reach Philips Hue Bridge, got http error : " + response.status_code + " reason : " + response.reason)
-            except requests.exceptions as C:
+                    logging.error(
+                        "issue to reach Philips Hue Bridge, got http error : " + str(
+                            response.status_code) + " reason : " + response.reason)
+            except requests.exceptions:
                 logging.error("issue to reach Philips Hue bridge")
         else:
             logging.error("error to get this device id")
             raise Exception("issue to get " + device_name + " id")
-        if status == True:
+        if status is True:
             data_to_return = {'status': True,
-                    'message': "powered on"
-                    }
+                              'message': "powered on"
+                              }
             return data_to_return
-        if status == False:
+        if status is False:
             data_to_return = {'status': False,
-                    'message': "powered off"
-                    }
+                              'message': "powered off"
+                              }
             return data_to_return
-        if status == None:
+        if status is None:
             return None
 
-
-    def send_command(self,action,device_name):
+    def send_command(self, action, device_name):
         data = None
         ret = False
         if action == "enable":
@@ -149,9 +151,9 @@ class ActionDevicePhilipsHue:
                     "on": False
                 }
             }
-        if data != None:
+        if data is not None:
             hue_id = self.get_device_id(device_name)
-            if hue_id != None:
+            if hue_id is not None:
                 url_raw = self.config.hue_url_all_dev
                 url = url_raw.replace(self.bridge_ip_token, self.bridge_ip)
                 url = url + '/' + hue_id
@@ -169,16 +171,18 @@ class ActionDevicePhilipsHue:
                             ret = True
                     else:
                         logging.error(
-                            "issue to reach Philips Hue Bridge, got http error : " + response.status_code + " reason : " + response.reason)
+                            "issue to reach Philips Hue Bridge, got http error : " + str(
+                                response.status_code) + " reason : " + response.reason)
 
-                except requests.exceptions as C:
+                except requests.exceptions:
                     logging.error("issue to reach Philips Hue bridge")
             else:
                 logging.error("error to get this device id")
                 raise Exception("issue to get " + device_name + " id")
         return ret
-    def enable_plug(self,device_name):
+
+    def enable_plug(self, device_name):
         return self.send_command("enable", device_name)
 
-    def disable_plug(self,device_name):
+    def disable_plug(self, device_name):
         return self.send_command("disable", device_name)

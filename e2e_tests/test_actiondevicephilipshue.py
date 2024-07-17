@@ -13,7 +13,7 @@ from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 dirname = os.path.dirname(__file__)
 #get parrent config file
 home = os.path.dirname(dirname)
-conffile = os.path.join(home, 'data/config_test.ini')
+conffile = os.path.join(home, 'config.ini')
 conf = Config(conffile)
 adm_hue = ActionDevicePhilipsHue(conf)
 
