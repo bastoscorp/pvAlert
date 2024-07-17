@@ -31,7 +31,7 @@ Note : I prefer to precise that an **internet connection is required.**
 
 ## Configuration :
 
-All configuration is done within config.ini file.
+All configuration is done within `config.ini` file.
 You need to fulfill at bare minimum the following fields:
 
 | Section | Field | Description                                    | Value                                                                                       |
