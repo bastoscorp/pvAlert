@@ -1,47 +1,22 @@
 import os
-import time
-from os.path import exists as file_exists
 
-import sys
-sys.path.insert(0, '../pvAlert')
-
-from config.config import Config
+import test_locator
 from business.connectManager import ConnectManager
 from business.solarDevicesManager import SolarDevicesManager
+from config.config import Config
+from exception.HuaweiApiException import HuaweiApiException
 
-
+test_locator = test_locator
 # need a configured config.ini file !!!
 
 dirname = os.path.dirname(__file__)
-#get parrent config file
+# get parrent config file
 home = os.path.dirname(dirname)
 conffile = os.path.join(home, 'config.ini')
 conf = Config(conffile)
 
 mgmt = ConnectManager(conf)
 
-# def test_init_device_manager_without_cache_info_file():
-#     file = conf.cacheInfoFile
-#     dirn = os.path.dirname(file)
-#     oldfilename = os.path.join(dirn, 'cache_info.txt.old')
-#
-#     if file_exists(file):
-#         os.rename(file, oldfilename)
-#         time.sleep(2)
-#     l_dev = ""
-#     l_dev = SolarDevicesManager(mgmt)
-#     fex = file_exists(file)
-#     time.sleep(2)
-#     ret = False
-#     if(l_dev.station_code != "" and l_dev.inverter.device_id != "" and l_dev.inverter.device_name != ""
-#             and l_dev.ps.device_id != "" and l_dev.ps.device_name != "" and fex == True):
-#         ret = True
-#     if ret and file_exists(oldfilename):
-#         os.remove(oldfilename)
-#     else:
-#         os.rename(oldfilename,file)
-#     time.sleep(2)
-#     assert ret
 
 def test_init_device_manager():
     l_dev = SolarDevicesManager(mgmt)
@@ -65,15 +40,14 @@ def test_init_device_manager_outdated_cache_info_file():
     else:
         assert False
 
+
 def test_get_station_with_wrong_url():
     good_station_url = conf.stationUri
     fake_station_url = "https://dummy.url/thirdData/stations"
     conf.stationUri = fake_station_url
     try:
         SolarDevicesManager(mgmt)
-    except Exception as err:
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(err).__name__, err.args)
+    except HuaweiApiException:
         conf.stationUri = good_station_url
         assert True
 
@@ -83,30 +57,10 @@ def test_get_device_with_wrong_url():
     fake_device_url = "https://dummy.url/thirdData/getDevList"
     conf.devicesUri = fake_device_url
     try:
-        dev = SolarDevicesManager(mgmt)
-    except Exception as err:
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(err).__name__, err.args)
+        SolarDevicesManager(mgmt)
+    except HuaweiApiException:
         conf.devicesUri = good_device_url
         assert True
-
-# def test_get_inverter_data():
-#     time.sleep(30)
-#     l_dev = SolarDevicesManager(mgmt)
-#     l_dev.get_inverter_data()
-#     if l_dev.inverter.power == "" and l_dev.inverter.status == "":
-#         assert False
-#     else:
-#         assert True
-#
-# def test_get_powersensor_data():
-#     time.sleep(30)
-#     l_dev = SolarDevicesManager(mgmt)
-#     l_dev.get_powersensor_data()
-#     if l_dev.ps.power == "" and l_dev.ps.status == "":
-#         assert False
-#     else:
-#         assert True
 
 
 def test_get_inverter_data_with_wrong_url():
@@ -116,9 +70,7 @@ def test_get_inverter_data_with_wrong_url():
     dev = SolarDevicesManager(mgmt)
     try:
         dev.get_inverter_data()
-    except Exception as err:
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(err).__name__, err.args)
+    except BaseException:
         conf.deviceKpiUri = good_url
         assert True
 
@@ -130,11 +82,10 @@ def test_get_powersensor_data_with_wrong_url():
     dev = SolarDevicesManager(mgmt)
     try:
         dev.get_powersensor_data()
-    except Exception as err:
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(err).__name__, err.args)
+    except BaseException:
         conf.deviceKpiUri = good_url
         assert True
+
 
 def test_get_inverter_data_frequency_exception():
     dev = SolarDevicesManager(mgmt)
@@ -152,6 +103,3 @@ def test_get_inverter_data_frequency_exception():
             i = 5
         i += 1
     assert result
-
-
-

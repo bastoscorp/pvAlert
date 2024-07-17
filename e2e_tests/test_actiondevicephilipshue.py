@@ -1,20 +1,20 @@
 import ipaddress
 import os
+import test_locator
+
 from os.path import exists as file_exists
 from config.config import Config
 from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 
-import sys
-sys.path.insert(0, '../pvAlert')
-
-
+# dumb test for quality
+test_locator = test_locator
 # should have a configured philips hue tor testing
 
-dirname = os.path.dirname(__file__)
+current_dir = os.path.dirname(__file__)
 # get parrent config file
-home = os.path.dirname(dirname)
-conffile = os.path.join(home, 'config.ini')
-conf = Config(conffile)
+home = os.path.dirname(current_dir)
+conf_file = os.path.join(home, 'config.ini')
+conf = Config(conf_file)
 adm_hue = ActionDevicePhilipsHue(conf)
 
 
