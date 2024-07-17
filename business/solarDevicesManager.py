@@ -12,8 +12,8 @@ from business.powersensorDevice import PowersensorDevice
 from exception.HuaweiApiFrequencyException import HuaweiApiFrequencyException
 from exception.HuaweiApiException import HuaweiApiException
 
-class SolarDevicesManager:
 
+class SolarDevicesManager:
     session_mgmt = ""
     station_code = ""
     inverter = InverterDevice()
@@ -32,12 +32,12 @@ class SolarDevicesManager:
         cache_info_file = self.session_mgmt.config.cacheInfoFile
         ret = False
         if file_exists(cache_info_file):
-             with open(cache_info_file, 'rb') as f1:
-                 #in case of cacheInfoFile is older than 24h --> need to delete it and create another
-                 c_timestamp = os.path.getctime(cache_info_file)
-                 duration = self.session_mgmt.config.cacheInfoFileDuration
-                 age = (time.time() - c_timestamp)
-                 if age < duration:
+            with open(cache_info_file, 'rb') as f1:
+                # in case of cacheInfoFile is older than 24h --> need to delete it and create another
+                c_timestamp = os.path.getctime(cache_info_file)
+                duration = self.session_mgmt.config.cacheInfoFileDuration
+                age = (time.time() - c_timestamp)
+                if age < duration:
                     data = pickle.load(f1)
                     self.station_code = data['station_code']
                     self.inverter.device_id = data['inverter_device_id']
@@ -64,8 +64,9 @@ class SolarDevicesManager:
     def get_station_code(self):
         # max 24 calls per day
         uri = self.session_mgmt.config.stationUri
-        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"], "Content-Type": self.session_mgmt.contentType["Content-Type"]}
-        data = {"pageNo":1, "pageSize":100}
+        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"],
+                   "Content-Type": self.session_mgmt.contentType["Content-Type"]}
+        data = {"pageNo": 1, "pageSize": 100}
         json_data = json.dumps(data)
         try:
             response = requests.post(uri, headers=headers, data=json_data)
@@ -81,15 +82,15 @@ class SolarDevicesManager:
             logging.error("Error Connecting:", errc)
             raise SystemExit(errc)
 
-
     def get_devices(self):
-        #max 24 calls per day
+        # max 24 calls per day
         uri = self.session_mgmt.config.devicesUri
-        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"], "Content-Type": self.session_mgmt.contentType["Content-Type"]}
+        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"],
+                   "Content-Type": self.session_mgmt.contentType["Content-Type"]}
         data = {"stationCodes": self.station_code}
         json_data = json.dumps(data)
         try:
-            response = requests.post(uri, headers=headers , data=json_data)
+            response = requests.post(uri, headers=headers, data=json_data)
             rep_data = response.json()
             if rep_data['success']:
                 data = rep_data["data"]
@@ -116,12 +117,13 @@ class SolarDevicesManager:
 
     def get_inverter_data(self):
         uri = self.session_mgmt.config.deviceKpiUri
-        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"], "Content-Type": self.session_mgmt.contentType["Content-Type"]}
+        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"],
+                   "Content-Type": self.session_mgmt.contentType["Content-Type"]}
         data = {"devIds": self.inverter.device_id, "devTypeId": self.inverter.device_type_code}
         json_data = json.dumps(data)
+        response = requests.post(uri, headers=headers, data=json_data)
+        rep_data = response.json()
         try:
-            response = requests.post(uri, headers=headers , data=json_data)
-            rep_data = response.json()
             if rep_data['success']:
                 data = rep_data["data"][0]
                 kpi = data["dataItemMap"]
@@ -131,12 +133,12 @@ class SolarDevicesManager:
             elif not rep_data["success"] and rep_data["failCode"] == 407:
                 err = rep_data["data"]
                 msg = "Query Frequency Too High"
-                logging.error(msg,err)
+                logging.error(msg, err)
                 raise HuaweiApiFrequencyException(msg, err)
             else:
                 err = rep_data["data"]
                 msg = rep_data["message"]
-                logging.error(msg,err)
+                logging.error(msg, err)
                 raise HuaweiApiException("issue with Huawei API", rep_data)
         except requests.exceptions.HTTPError as err:
             logging.error("Error HTTP:", err)
@@ -150,20 +152,20 @@ class SolarDevicesManager:
             if rep_data["failCode"] == 305:
                 err = rep_data["failCode"]
                 msg = "User must Relogin"
-                logging.error(msg,err)
+                logging.error(msg, err)
                 logging.info("deleting session...")
-                if (self.session_mgmt.delete_session()):
+                if self.session_mgmt.delete_session():
                     logging.info("Session Deleted !")
                 raise HuaweiApiException(msg, rep_data)
 
-
     def get_powersensor_data(self):
         uri = self.session_mgmt.config.deviceKpiUri
-        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"], "Content-Type": self.session_mgmt.contentType["Content-Type"]}
+        headers = {"XSRF-TOKEN": self.session_mgmt.session_cookie["XSRF-TOKEN"],
+                   "Content-Type": self.session_mgmt.contentType["Content-Type"]}
         data = {"devIds": self.ps.device_id, "devTypeId": self.ps.device_type_code}
         json_data = json.dumps(data)
         try:
-            response = requests.post(uri, headers=headers , data=json_data)
+            response = requests.post(uri, headers=headers, data=json_data)
             rep_data = response.json()
             if rep_data['success']:
                 data = rep_data["data"][0]
@@ -183,5 +185,3 @@ class SolarDevicesManager:
         except requests.exceptions.ConnectionError as errc:
             logging.error("Error Connecting:", errc)
             raise SystemExit(errc)
-
-
