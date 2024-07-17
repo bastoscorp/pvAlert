@@ -64,3 +64,4 @@ class ActionDeviceManager:
         else:
             logging.warning(dev_type + " device type not implemented")
         return status
+
