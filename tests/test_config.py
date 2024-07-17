@@ -6,8 +6,8 @@ sys.path.insert(0, '../pvAlert')
 
 dirname = os.path.dirname(__file__)
 #get parrent config file
-dirname = os.path.dirname(dirname)
-conffile = os.path.join(dirname, 'data/config_test.ini')
+home = os.path.dirname(dirname)
+conffile = os.path.join(home, 'data/config_test.ini')
 conf = Config(conffile)
 
 
