@@ -86,7 +86,9 @@ class ActionDevicePhilipsHue:
                         i = data_size
                     i += 1
             else:
+
                 logging.error("issue to reach Philips Hue Bridge, got http error : " +  str(response.status_code) + " reason : " + response.reason)
+
             if target_id != "":
                 return target_id
             else:
@@ -95,6 +97,7 @@ class ActionDevicePhilipsHue:
         except requests.exceptions as C:
             logging.error("issue to reach Philips Hue bridge")
             return None
+
 
     def get_device_status(self, device_name):
         hue_id = self.get_device_id(device_name)
