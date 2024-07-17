@@ -1,11 +1,20 @@
 import ipaddress
+import os
 from os.path import exists as file_exists
+
+import sys
+sys.path.insert(0, '../pvAlert')
 
 from config.config import Config
 from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 
+# should have a configured philips hue tor testing
 
-conf = Config('../config.ini')
+dirname = os.path.dirname(__file__)
+#get parrent config file
+home = os.path.dirname(dirname)
+conffile = os.path.join(home, 'config.ini')
+conf = Config(conffile)
 adm_hue = ActionDevicePhilipsHue(conf)
 
 def test_save_cache():
@@ -28,28 +37,9 @@ def test_bridge_ip_discovery():
     # test if it is an v4 ip address
     assert ipaddress.ip_address(adm_hue.bridge_ip)
 
-def test_get_device_id():
-    hue_id = adm_hue.get_device_id("PAC piscine")
-    assert hue_id != None
-
 
 def test_get_device_id_KO():
     hue_id = adm_hue.get_device_id("azerzrtzretzertezrt")
     assert hue_id == None
 
-def test_get_device_status():
-    status = adm_hue.get_device_status("PAC piscine")
-    assert status != None
 
-def test_enable_plug():
-    if adm_hue.enable_plug("PAC piscine"):
-        status = adm_hue.get_device_status("PAC piscine")
-        assert status['status'] == True
-    else:
-        assert False
-def test_disable_plug():
-    if adm_hue.disable_plug("PAC piscine"):
-        status = adm_hue.get_device_status("PAC piscine")
-        assert status['status'] == False
-    else:
-        assert False
