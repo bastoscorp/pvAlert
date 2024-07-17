@@ -1,8 +1,11 @@
 import os
-from config.config import Config
 
 import sys
 sys.path.insert(0, '../pvAlert')
+
+
+from config.config import Config
+
 
 dirname = os.path.dirname(__file__)
 #get parrent config file
