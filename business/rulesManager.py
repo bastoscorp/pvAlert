@@ -9,8 +9,8 @@ from business.powersensorRules import PowersensorRules
 from business.powerUsageRules import PowerUsageRules
 from business.alertManager import AlertManager
 from business.actionDeviceManager import ActionDeviceManager
-from exception.HuaweiApiFrequencyException import *
-from exception.HuaweiApiException import *
+from exception.HuaweiApiFrequencyException import HuaweiApiFrequencyException
+from exception.HuaweiApiException import HuaweiApiException
 
 
 class RulesManager:
@@ -51,7 +51,7 @@ class RulesManager:
     def control_status(self):
         messages = ""
         self.refresh_data()
-        status = False
+
         if self.dev_mgmt.inverter.status is not None:
             # we got a status from Huawei ...
             str_status_code = str(self.dev_mgmt.inverter.status)
@@ -101,7 +101,7 @@ class RulesManager:
                 messages = messages + ps_message
             else:
                 logging.info("Powersensor OK")
-            status = True
+
         else:
             status_ps = False
             messages = messages + "Issue : impossible to get powersensor status \n"
