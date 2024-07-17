@@ -175,6 +175,6 @@ Otherwhise you can visit https://www.base64decode.org/
 
 - [X] *nix crontab script
 - [X] *nix run script
-- [ ] batch / powershell script
+- [ ] batch / powershell scripts
 - [ ] Docker Image
 
