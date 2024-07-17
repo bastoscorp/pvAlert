@@ -12,6 +12,11 @@ import os.path
 from config.config import Config
 
 
+def decode_pwd(encoded):
+    decoded_bytes = base64.b64decode(encoded)
+    decoded_string = decoded_bytes.decode("utf-8").rstrip()
+    return decoded_string
+
 
 class ConnectManager:
     session_cookie = {}
@@ -29,14 +34,9 @@ class ConnectManager:
         if not self.load_session():
             self.login()
 
-    def decode_pwd(self, encoded):
-        decoded_bytes = base64.b64decode(encoded)
-        decoded_string = decoded_bytes.decode("utf-8").rstrip()
-        return decoded_string
-
     def login(self):
         uri = self.config.loginUri
-        data = {"userName": self.config.userName, "systemCode": self.decode_pwd(self.config.systemCode)}
+        data = {"userName": self.config.userName, "systemCode": decode_pwd(self.config.systemCode)}
         json_data = json.dumps(data)
         try:
             response = requests.post(uri, data=json_data)

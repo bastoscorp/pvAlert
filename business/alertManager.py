@@ -10,12 +10,11 @@ class AlertManager:
     def __init__(self, conf: Config):
         self.config = conf
 
-    def sendAlert(self, message):
+    def send_alert(self, message):
         url = self.config.alert_configured_url
 
         headers = {
             "Title": self.config.alert_title,
-            #"Priority": "urgent",
             "Tags": "warning"
         }
 
@@ -27,7 +26,3 @@ class AlertManager:
         else:
             logging.error("cannot send alert")
             return False
-
-
-
-

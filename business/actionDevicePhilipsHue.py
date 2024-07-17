@@ -15,7 +15,7 @@ urllib3.disable_warnings()
 
 class ActionDevicePhilipsHue:
     config: Config = None
-    bridge_ip: str = None
+    bridge_ip: str = ''
     bridge_ip_token: str = "<bridge_ip>"
 
     def __init__(self, conf: Config):
