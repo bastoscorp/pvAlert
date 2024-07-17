@@ -27,7 +27,7 @@ Note : I prefer to precise that an **internet connection is required.**
 1. Create folder where you want to install
 
 2. Clone from github:
-`git clone https://github.com/bastoscorp/pvAlerts`
+`git clone https://github.com/bastoscorp/pvAlert`
 
 whoop
 ## Configuration :
