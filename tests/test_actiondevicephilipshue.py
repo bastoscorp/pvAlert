@@ -1,11 +1,20 @@
 import ipaddress
+import os
 from os.path import exists as file_exists
+
+import sys
+sys.path.insert(0, '../pvAlert')
 
 from config.config import Config
 from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 
 # should have a configured philips hue tor testing
-conf = Config('../config.ini')
+
+dirname = os.path.dirname(__file__)
+#get parrent config file
+home = os.path.dirname(dirname)
+conffile = os.path.join(home, 'data/config_test.ini')
+conf = Config(conffile)
 adm_hue = ActionDevicePhilipsHue(conf)
 
 def test_save_cache():

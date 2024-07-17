@@ -71,12 +71,12 @@ class ActionDevicePhilipsHue:
         try:
             headers = {"hue-application-key": self.config.hue_username}
             response = requests.get(url, headers=headers, verify=False)
+            target_id = ""
             if response.status_code == 200:
                 rep_data = response.json()
                 data = rep_data['data']
                 data_size= len(data)
                 i = 0
-                target_id = ""
                 while i < data_size:
                     dev = data[i]
                     metadata = dev['metadata']
@@ -86,7 +86,7 @@ class ActionDevicePhilipsHue:
                         i = data_size
                     i += 1
             else:
-                logging.error("issue to reach Philips Hue Bridge, got http error : " + response.status_code + " reason : " + response.reason)
+                logging.error("issue to reach Philips Hue Bridge, got http error : " +  str(response.status_code) + " reason : " + response.reason)
             if target_id != "":
                 return target_id
             else:
@@ -94,6 +94,7 @@ class ActionDevicePhilipsHue:
                 return None
         except requests.exceptions as C:
             logging.error("issue to reach Philips Hue bridge")
+            return None
 
     def get_device_status(self, device_name):
         hue_id = self.get_device_id(device_name)

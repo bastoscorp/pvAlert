@@ -1,16 +1,31 @@
 import time
 import pytest
 import shutil
+import os
 from os.path import exists as file_exists
 from shutil import copyfile
+
+import sys
+sys.path.insert(0, '../pvAlert')
 
 from config.config import Config
 from business.connectManager import ConnectManager
 
-conf = Config('../data/config_test.ini')
+
+
+
+dirname = os.path.dirname(__file__)
+#get parrent config file
+home = os.path.dirname(dirname)
+conffile = os.path.join(home, 'data/config_test.ini')
+conf = Config(conffile)
+
+
 mgmt = ConnectManager(conf)
 current_session_file = conf.sessionFile + ".bak"
-copyfile('../data/sessionFile.txt', conf.sessionFile)
+
+sessfile = os.path.join(home, 'data/sessionFile.txt')
+copyfile(sessfile, conf.sessionFile)
 
 def test_config_username():
     assert conf.userName == "Eugen_API"

@@ -1,11 +1,23 @@
 import time
+import os
+
+import sys
+sys.path.insert(0, '../pvAlert')
 
 from config.config import Config
 from business.connectManager import ConnectManager
 from business.rulesManager import RulesManager
 
+
+
+
 # need a configured config.ini file
-conf = Config('../config.ini')
+dirname = os.path.dirname(__file__)
+#get parrent config file
+home = os.path.dirname(dirname)
+conffile = os.path.join(home, 'config.ini')
+conf = Config(conffile)
+
 mgmt = ConnectManager(conf)
 my_rm = RulesManager(conf)
 

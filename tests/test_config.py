@@ -1,6 +1,17 @@
+import os
 from config.config import Config
 
-conf = Config('../data/config_test.ini')
+import sys
+sys.path.insert(0, '../pvAlert')
+
+dirname = os.path.dirname(__file__)
+#get parrent config file
+dirname = os.path.dirname(dirname)
+conffile = os.path.join(dirname, 'data/config_test.ini')
+conf = Config(conffile)
+
+
+
 def test_config_userName():
     assert conf.userName == "Eugen_API"
 
