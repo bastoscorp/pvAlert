@@ -15,7 +15,7 @@ urllib3.disable_warnings()
 
 class ActionDevicePhilipsHue:
     config: Config = None
-    bridge_ip: str = ''
+    bridge_ip: str = ""
     bridge_ip_token: str = "<bridge_ip>"
 
     def __init__(self, conf: Config):
@@ -43,7 +43,7 @@ class ActionDevicePhilipsHue:
         return ret
 
     def save_cache_data(self):
-        if self.bridge_ip is None:
+        if self.bridge_ip == "":
             self.discover_ip()
         cache_file = self.config.hue_cache_file
         data = {'bridge_ip': self.bridge_ip

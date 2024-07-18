@@ -1,13 +1,13 @@
 import time
 import os
-import test_locator
+import e2e_test_locator
 
 from config.config import Config
 from business.connectManager import ConnectManager
 from business.rulesManager import RulesManager
 
 
-test_locator = test_locator
+e2e_test_locator = e2e_test_locator
 
 # need a configured config.ini file !!!
 
