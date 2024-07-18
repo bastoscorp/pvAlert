@@ -1,13 +1,13 @@
 import ipaddress
 import os
-import test_locator
+import e2e_test_locator
 
 from os.path import exists as file_exists
 from config.config import Config
 from business.actionDevicePhilipsHue import ActionDevicePhilipsHue
 
 
-test_locator = test_locator
+e2e_test_locator = e2e_test_locator
 # should have a configured philips hue tor testing
 
 current_dir = os.path.dirname(__file__)

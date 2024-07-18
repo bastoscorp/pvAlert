@@ -1,12 +1,12 @@
 import os
 
-import test_locator
+import e2e_test_locator
 from business.connectManager import ConnectManager
 from business.solarDevicesManager import SolarDevicesManager
 from config.config import Config
 from exception.HuaweiApiException import HuaweiApiException
 
-test_locator = test_locator
+e2e_test_locator = e2e_test_locator
 # need a configured config.ini file !!
 
 dirname = os.path.dirname(__file__)
