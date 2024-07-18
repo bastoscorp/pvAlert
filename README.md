@@ -24,9 +24,15 @@ Note : I prefer to precise that an **internet connection is required.**
 
 ## Installation :
 
-Very simple, execute this :
+Very simple, if you have git installed on your target execute this :
 
-`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bastoscorp/pvAlert/main/install_pvAlert.sh)"`
+`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/bastoscorp/pvAlert/main/install_pvAlert_with_git.sh)"`
+
+If you don't have git installed on your target do this:
+
+1. Download latest tag : https://github.com/bastoscorp/pvAlert/tags
+2. Uncompress it into pvAlert folder
+3. Run install_pvAlert_manual.sh
 
 
 ## Configuration :
